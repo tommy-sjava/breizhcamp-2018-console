@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/tommy-sjava/breizhcamp-2018-console/issues"
   },
-  "homepage": "https://github.com/tommy-sjava/breizhcamp-2018-console#readme"
+  "homepage": "https://github.com/tommy-sjava/breizhcamp-2018-console#readme",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
 }
