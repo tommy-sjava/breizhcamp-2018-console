@@ -3,6 +3,21 @@ var talks = [];
 
 exports.init = function (callback) {
 
-   callback(12);
+    // TODO effectuer les requêtes HTTP permettant de récupérer les données du BreizhCamp
+    var request = require('request')
 
+    // Envoie de la requête http
+    request('http://2018.breizhcamp.org/json/talks.json', { json: true }, function(err, res, body) {
+        if (err) { return console.log('Erreur', err); }
+    
+        // body contient les données récupérées
+        console.log('Ok', body);
+       // TODO     => une fois les données récupérées, alimenter la variable talks
+        talks = talks.concat(body);
+        // TODO         => invoquer la callback avec le nombre de sessions récupérées
+        callback(talks.length);
+    });
+    
+   
+    
 };
