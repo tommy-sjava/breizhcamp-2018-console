@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start" : "node index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -16,6 +16,8 @@
   "bugs": {
     "url": "https://github.com/Desplat/breizhcamp-2018-console/issues"
   },
-  "homepage": "https://github.com/Desplat/breizhcamp-2018-console#readme"
+  "homepage": "https://github.com/Desplat/breizhcamp-2018-console#readme",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
 }
-
