@@ -11,3 +11,9 @@ exports.listeSession = function() {
         //console.log('[init]', nb, 'sessions trouvées.')
     });
 };
+
+exports.listeSpeakers = function() {
+    service.listeSpeakers(function() {
+        //console.log('[init]', nb, 'sessions trouvées.')
+    });
+};
