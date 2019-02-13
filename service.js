@@ -12,7 +12,7 @@ exports.init = function (callback) {
         if (err) {
             return console.log('Erreur', err);
         }
-        
+
         talks = talks.concat(body); // => une fois les données récupérées, alimenter la variable talks
         //console.log(talks);
 
@@ -20,13 +20,13 @@ exports.init = function (callback) {
             if (err) {
                 return console.log(err);
             }
-        
+
             talks = talks.concat(body); // => une fois les données récupérées, alimenter la variable talks
             //console.log(talks);
 
             console.log('Données mise à jour');
             callback(talks.length);        // => invoquer la callback avec le nombre de sessions récupérées
-        });    
+        });
     });
 };
 
@@ -34,11 +34,31 @@ exports.listerSessions = function (callback) {
 
     if (talks.length == 0) {
 
-        exports.init(function(taille){
+        exports.init(function (taille) {
             // init est fait
             talks.forEach(element => {
                 callback(element)
             });
         });
     }
+    else {
+        talks.forEach(element => {
+            callback(element)
+        });
+    }
 };
+
+exports.listerPresentateurs = function (callback) {
+    var request = require('request');
+    var jsdom = require('jsdom');
+
+    request('http://2018.breizhcamp.org/conference/speakers/', {}, function (err, res, body) {
+        if (err) { return console.log('Erreur', err); }
+
+        var dom = new jsdom.JSDOM(body);
+        var langs = dom.window.document.querySelectorAll("h3.media-heading");
+        langs.forEach(function (lg) {
+            callback(lg.innerHTML);
+        });
+    });
+}

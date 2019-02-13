@@ -6,37 +6,44 @@ var rl = readline.createInterface({
     output: process.stdout
 });
 
-exports.start = function() {
+exports.start = function () {
 
     menu();
 }
 
-var menu = function() {
-        
-    rl.question('*************************\n1. Rafraichir les données\n2. Lister les sessions\n99. Quitter\n', function(saisie) {
+var menu = function () {
 
-        switch(saisie) {
+    rl.question('*************************\n1. Rafraichir les données\n2. Lister les sessions\n3. Lister les présentateurs\n99. Quitter\n', function (saisie) {
 
-            case('1'):
-                service.init(function(nb) {
-                    console.log(nb, 'sessions trouvées.')
+        switch (saisie) {
+
+            case ('1'):
+                service.init(function (nb) {
+                    console.log(nb, 'sessions trouvées.');
                 });
                 menu();
                 break;
 
-            case('2'):
-                service.listerSessions(function(nb) {
+            case ('2'):
+                service.listerSessions(function (nb) {
                     str = nb.name + ' (' + nb.speakers + ')';
                     console.log(str);
                 });
                 menu();
                 break;
 
-            case('99'):
+            case ('3'):
+                service.listerPresentateurs(function (nb) {
+                    console.log(nb);
+                })
+                menu();
+                break;
+
+            case ('99'):
 
                 rl.close();// attention, une fois l'interface fermée, la saisie n'est plus possible
                 console.log('A bientôt');
                 break;
-            }
-        });
-    }
+        }
+    });
+}
