@@ -64,7 +64,7 @@ exports.research = function (saisie) {
     if (talks == 0) exports.init(function (taille) { });
     var res = [];
     res = talks.filter(function (val) {
-        return (val.name.includes(saisie))
+        return (val.name.toUpperCase().includes(saisie.toUpperCase()))
     });
     return res;
 }
