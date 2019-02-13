@@ -37,11 +37,26 @@ exports.menu = function menu() {
         } else if (saisie === '2') {
             service.listerSession(function (talks) {
                 talks.forEach(function (uneSession) {
-                    console.log(uneSession.name.toUpperCase() + '  ' + '(' + uneSession.speakers.toUpperCase() + ')')
+
+                    var titre = '';
+                    if (uneSession.name) {
+                        titre += uneSession.name.toUpperCase()
+                    } else {
+                        console.log('Pas de titre')
+                    }
+                    var speakers = '';
+                    if (uneSession.speakers) {
+                        speakers += uneSession.speakers.toUpperCase()
+                    } else {
+                        console.log('Pas de Speakers associé à :' + uneSession.name)
+                    }
+
+                    console.log(titre + '  ' + '(' + speakers + ')')
 
                 })
+                menu();
             });
-            menu();
+
         } else if (saisie === '99') {
             rl.close();
         }
