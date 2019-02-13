@@ -4,7 +4,7 @@ var talks = [];
 
 exports.init = function (callback) {
 
-
+    talks = [];
     // Envoie de la requête http
     request('http://2018.breizhcamp.org/json/talks.json', { json: true }, function (err, res, body) {
         if (err) { return console.log('Erreur', err); }
@@ -29,8 +29,14 @@ exports.init = function (callback) {
 
     });
 
-
-
-
-
 };
+
+exports.listerSessions = function (callback) {
+    if (talks == 0) exports.init(function (taille) {
+        talks.forEach(element => {
+            callback(element);
+        });
+    }
+    );
+
+}
