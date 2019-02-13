@@ -1,6 +1,7 @@
 // tableau qui contiendra toutes les sessions du BreizhCamp
 var request = require('request')
 var jsdom = require('jsdom');
+var readline = require('readline');
 var talks = [];
 
 exports.init = function (callback) {
@@ -55,5 +56,22 @@ exports.listePres = function (callback) {
         langs.forEach(element => {
             callback(element.innerHTML);
         });
+    });
+}
+
+exports.research = function (callback) {
+
+    if (talks == 0) exports.init(function (taille) { });
+
+    var rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+    rl.question('Quel mot recherchez vous ? :', function (saisie) {
+
+        rl.close();
+        callback(talks.filter(function (val) {
+            return (val.name.includes(`${saisie}`))
+        }));
     });
 }

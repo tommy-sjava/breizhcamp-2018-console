@@ -13,7 +13,7 @@ function menu() {
         output: process.stdout
     });
 
-    rl.question('*************************\n1. Rafraichir les données\n2. Lister les sessions\n3. Lister les présentateurs\n99. Quitter\n\n', function (saisie) {
+    rl.question('*************************\n1. Rafraichir les données\n2. Lister les sessions\n3. Lister les présentateurs\n4. Rechercher une session\n99. Quitter\n\n', function (saisie) {
 
         rl.close();
         return choice(saisie);
@@ -30,15 +30,24 @@ function choice(saisie) {
             break;
         case '2':
             service.listerSessions(function (val) {
-                console.log(val.name," (",val.speakers,")")
+                console.log(val.name, " (", val.speakers, ")")
             });
             menu();
             break;
-        case '3' :
-            service.listePres(function (val){
+        case '3':
+            service.listePres(function (val) {
                 console.log(val);
             });
             menu();
+            break;
+        case '4':
+            service.research(function (val) {
+                // val.forEach(element => {
+                //     console.log(element);
+                // });
+                console.log(val);
+            })
+
             break;
         case '99':
             lg('Kénavo');
