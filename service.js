@@ -7,17 +7,28 @@ exports.init = function (callback) {
     var request = require('request')
 
     // Envoie de la requête http
-    request('http://2018.breizhcamp.org/json/talks.json', { json: true }, function(err, res, body) {
+    request('http://2018.breizhcamp.org/json/talks.json', { json: true }, function (err, res, tab1) {
         if (err) { return console.log('Erreur', err); }
-    
-        // body contient les données récupérées
-        console.log('Ok', body);
-       // TODO     => une fois les données récupérées, alimenter la variable talks
-        talks = talks.concat(body);
-        // TODO         => invoquer la callback avec le nombre de sessions récupérées
-        callback(talks.length);
-    });
-    
-   
-    
-};
+
+        //console.log('Ok', tab1);
+        talks = talks.concat(tab1);
+        request('http://2018.breizhcamp.org/json/others.json', { json: true }, function (err, res, tab2) {
+            if (err) { return console.log('Erreur', err); }
+
+            //console.log('Ok', tab2);
+            talks = talks.concat(tab2);
+            callback(talks.length);
+        });
+    })
+}
+exports.listerSession = function (callback) {
+
+    if (talks.length === 0) {
+        exports.init(function (nb) {
+            callback(talks)
+        })
+    } else {
+        callback(talks)
+    }
+
+}
