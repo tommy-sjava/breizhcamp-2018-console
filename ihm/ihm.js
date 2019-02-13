@@ -1,19 +1,33 @@
 var service = require('../service/service.js');
+var menu = require('./menu.js');
 
-exports.start = function() {
-    service.init(function(nb) {
-        //console.log('[init]', nb, 'sessions trouvées.')
+exports.start = function () {
+    menu.affichage(function () {
+
     });
 };
 
-exports.listeSession = function() {
-    service.listerSessions(function(init) {
-        //console.log('[init]', nb, 'sessions trouvées.')
+exports.listeSession = function (callback) {
+    service.listerSessions(function (listeName) {
+        callback(listeName);
+
     });
 };
 
-exports.listeSpeakers = function() {
-    service.listeSpeakers(function() {
-        //console.log('[init]', nb, 'sessions trouvées.')
+exports.listeSpeakers = function (callback) {
+    service.listeSpeakers(function (langs) {
+        callback(langs);
+
     });
+};
+
+exports.listeSessionVue = function (saisie2) {
+    var res = service.listeSessionVues(saisie2);
+
+    return res;
+};
+
+exports.descriptSession = function (saisie2) {
+    var res = service.descriptionSession(saisie2);
+    return res;
 };
