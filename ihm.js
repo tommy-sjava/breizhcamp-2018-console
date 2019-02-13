@@ -20,24 +20,29 @@ var menu = function () {
             case ('1'):
                 service.init(function (nb) {
                     console.log(nb, 'sessions trouvées.');
+                    menu();
                 });
-                menu();
                 break;
 
             case ('2'):
-                service.listerSessions(function (nb) {
-                    str = nb.name + ' (' + nb.speakers + ')';
-                    console.log(str);
+                service.listerSessions(function (tab) {
+                    tab.forEach(element => {
+                        str = element.name + ' (' + element.speakers + ')';
+                        console.log(str);
+                    });
+                    menu();
                 });
-                menu();
                 break;
 
             case ('3'):
                 service.listerPresentateurs(function (nb) {
-                    console.log(nb);
+                    nb.forEach(element => {
+                        console.log(element.innerHTML);
+                    })
+                    menu();
                 })
-                menu();
                 break;
+
 
             case ('99'):
 
@@ -47,3 +52,4 @@ var menu = function () {
         }
     });
 }
+

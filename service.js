@@ -36,15 +36,12 @@ exports.listerSessions = function (callback) {
 
         exports.init(function (taille) {
             // init est fait
-            talks.forEach(element => {
-                callback(element)
-            });
+
+            callback(talks)
         });
     }
     else {
-        talks.forEach(element => {
-            callback(element)
-        });
+        callback(talks)
     }
 };
 
@@ -57,8 +54,6 @@ exports.listerPresentateurs = function (callback) {
 
         var dom = new jsdom.JSDOM(body);
         var langs = dom.window.document.querySelectorAll("h3.media-heading");
-        langs.forEach(function (lg) {
-            callback(lg.innerHTML);
-        });
+        callback(langs);
     });
 }
