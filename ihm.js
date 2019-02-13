@@ -16,17 +16,18 @@ exports.start = function () {
 var menu = function () {
     rl.question("1. Rafraichir les données\n2. Lister les sessions\n99. Quitter\n", function (saisie) {
         switch (saisie) {
-            case ('1'): console.log("blabla1\n")
-               // service.init(callback);
+            case ('1'):
+                // service.init(callback);
+                console.log("... Données mises à jour\n");
                 menu();
                 break;
             case ('2'): console.log("blabla2\n")
                 service.init(function (nb) {
-                    console.log('[init]', nb, 'sessions trouvées.')
+                    console.log('[init]', nb, 'sessions trouvées.\n')
                 });
                 menu();
                 break;
-            case ('99'): console.log("blabla3\n")
+            case ('99'): console.log("Fermeture...\n")
                 rl.close();
                 break;
         }
