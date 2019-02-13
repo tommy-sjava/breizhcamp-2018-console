@@ -3,6 +3,7 @@ var talks = [];
 
 exports.init = function (callback) {
 
+    talks = [];
     // Effectuer les requêtes HTTP permettant de récupérer les données du BreizhCamp
 
     const request = require('request');
@@ -23,13 +24,21 @@ exports.init = function (callback) {
             talks = talks.concat(body); // => une fois les données récupérées, alimenter la variable talks
             //console.log(talks);
 
-            callback(talks.length);
-        });
-    
+            console.log('Données mise à jour');
+            callback(talks.length);        // => invoquer la callback avec le nombre de sessions récupérées
+        });    
     });
+};
 
-    
+exports.listerSessions = function (callback) {
 
-        // => invoquer la callback avec le nombre de sessions récupérées
+    if (talks.length == 0) {
 
+        exports.init(function(taille){
+            // init est fait
+            talks.forEach(element => {
+                callback(element)
+            });
+        });
+    }
 };
