@@ -26,3 +26,19 @@ exports.listerSessions = function(callback) {
         callback(talks)
     }
 }
+exports.listerPresentateur = function (callback) {
+
+
+    request('http://2018.breizhcamp.org/conference/speakers/', {}, function (err, res, body) {
+        if (err) { return console.log('Erreur', err); }
+        var jsdom = require('jsdom');
+
+        // récupération de la page HTML exemple
+               
+        var dom = new jsdom.JSDOM(body);
+        var langs = dom.window.document.querySelectorAll(".media-heading");
+        langs.forEach(function(lg) {
+            console.log(lg.innerHTML);
+        });
+    });
+}

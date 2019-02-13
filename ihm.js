@@ -1,6 +1,7 @@
 var service = require('./service');
 var readline = require('readline');
 
+
 var rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -16,6 +17,7 @@ console.log("*************************")
 console.log(" ");
 console.log("1. Rafraichir les données");
 console.log("2. Lister les sessions");
+console.log("3. Lister les présentateurs");
 console.log("99. Quitter");
 
 rl.question('Que voulez vous faire ? ', function(saisie) {
@@ -29,6 +31,13 @@ rl.question('Que voulez vous faire ? ', function(saisie) {
         service.listerSessions(function(sessions){
             sessions.forEach(function(unSession) {
                 console.log(unSession.name + " (" + unSession.speakers + ")");
+            })
+        })
+    }
+    else if(saisie == 3) {
+        service.listerPresentateur(function(pres){
+            pres.forEach(function(unPres){
+                console.log(unPres);
             })
         })
     }
