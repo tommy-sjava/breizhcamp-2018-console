@@ -1,4 +1,4 @@
-console.log('** Application BreizhCamp 2018 **');
+
 
 var ihm = require('./ihm');
 
