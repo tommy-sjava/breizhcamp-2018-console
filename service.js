@@ -4,7 +4,6 @@ var talks = [];
 
 exports.init = function (callback) {
 
-    var talks = [];
 
     // Envoie de la requête http
     request('http://2018.breizhcamp.org/json/talks.json', { json: true }, function (err, res, body) {
