@@ -36,17 +36,29 @@ exports.start = function () {
         }
         else if (saisie == 4) {
             rl.question('Quel mot voulez vous rechercher ? ', function (word) {
-                service.findByWord(function (talks) {
-                    var count = 0;
-                    talks.forEach(function (e) {
-                        if (e.name.toLowerCase().indexOf(word) >= 0) {
-                            count++;
-                            console.log(count + ". " + e.name);
-                        }
-                    });
+                if(word === ""){
+                    console.log("Aucune session trouvée");
                     console.log("98. Refaire une nouvelle recherche");
                     console.log("99. Retour au menu principal");
-                });
+                }else{
+                    service.findByWord(function (talks) {
+                        var count = 0;
+                        var find = false;
+                        talks.forEach(function (e) {
+                            if (e.name.toLowerCase().indexOf(word) >= 0) {
+                                find = true;
+                                count++;
+                                console.log(count + ". " + e.name);
+                            }
+                        });
+                        if(!find){
+                            console.log("Aucune session trouvée");
+                        }
+                        console.log("98. Refaire une nouvelle recherche");
+                        console.log("99. Retour au menu principal");
+                    });
+                }
+                
             });
 
         }
