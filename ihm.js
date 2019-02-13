@@ -41,12 +41,24 @@ function choice(saisie) {
             menu();
             break;
         case '4':
-            service.research(function (val) {
-                // val.forEach(element => {
-                //     console.log(element);
-                // });
-                console.log(val);
-            })
+            var rl = readline.createInterface({
+                input: process.stdin,
+                output: process.stdout
+            });
+            rl.question('Quel mot recherchez vous ? :', function (saisie) {
+
+
+                rl.close();
+                var res = service.research(saisie)
+                var i = 1;
+                res.forEach(element => {
+                    console.log(i + ' ' + element.name);
+                    i++;
+                });
+
+            });
+
+
 
             break;
         case '99':

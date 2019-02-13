@@ -59,19 +59,12 @@ exports.listePres = function (callback) {
     });
 }
 
-exports.research = function (callback) {
+exports.research = function (saisie) {
 
     if (talks == 0) exports.init(function (taille) { });
-
-    var rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
+    var res = [];
+    res = talks.filter(function (val) {
+        return (val.name.includes(saisie))
     });
-    rl.question('Quel mot recherchez vous ? :', function (saisie) {
-
-        rl.close();
-        callback(talks.filter(function (val) {
-            return (val.name.includes(`${saisie}`))
-        }));
-    });
+    return res;
 }
