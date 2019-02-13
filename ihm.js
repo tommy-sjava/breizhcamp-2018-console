@@ -50,11 +50,14 @@ function choice(saisie) {
 
                 rl.close();
                 var res = service.research(saisie)
-                var i = 1;
-                res.forEach(element => {
-                    console.log(i + ' ' + element.name);
-                    i++;
-                });
+                if (res != null) {
+                    var i = 1;
+                    res.forEach(element => {
+                        console.log(i + ' ' + element.name);
+                        i++;
+                    });
+                } else { console.log("(aucune session") }
+                console.log('98. Refaire une nouvelle recherche\n99. Retour au menu principal')
 
             });
 
