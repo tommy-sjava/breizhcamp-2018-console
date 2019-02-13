@@ -8,9 +8,9 @@ var rl = readline.createInterface({
 });
 
 exports.start = function () {
-    service.init(function (nb) {
-        console.log('[init]', nb, 'sessions trouvées.')
-    });
+    //service.init(function (nb) {
+    //  console.log('[init]', nb, 'sessions trouvées.')
+    //});
     menu();
 };
 var menu = function () {
@@ -18,14 +18,34 @@ var menu = function () {
         switch (saisie) {
             case ('1'):
                 // service.init(callback);
+                service.init(function (nb) {
+                    console.log('[init]', nb, 'sessions trouvées.\n')
+                });
                 console.log("... Données mises à jour\n");
                 menu();
                 break;
             case ('2'): console.log("blabla2\n")
-                service.init(function (nb) {
-                    console.log('[init]', nb, 'sessions trouvées.\n')
+                service.listerSession(function (talks) {
+                    talks.forEach(function (uneSession) {
+
+                        var titre = '';
+                        if (uneSession.name) {
+                            titre += uneSession.name.toUpperCase()
+                        } else {
+                            console.log('Pas de titre')
+                        }
+                        var speakers = '';
+                        if (uneSession.speakers) {
+                            speakers += uneSession.speakers.toUpperCase()
+                        } else {
+                            console.log('Pas de Speakers associé à :' + uneSession.name)
+                        }
+
+                        console.log(titre + '  ' + '(' + speakers + ')')
+
+                    })
+                    menu();
                 });
-                menu();
                 break;
             case ('99'): console.log("Fermeture...\n")
                 rl.close();
