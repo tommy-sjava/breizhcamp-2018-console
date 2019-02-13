@@ -36,6 +36,9 @@ exports.init = function (callback) {
 exports.listerSessions = function(callback){
     if(listeName.size===0){
         this.init(callback);
+        console.log("Chargement en cours des sessions.")
     } 
-    console.log(listeName);
+    else{
+        console.log(listeName);
+    }
 }
