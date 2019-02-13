@@ -24,7 +24,7 @@ exports.init = function (callback) {
             //console.log(talks);
 
             callback(talks.length);
-    });
+        });
     
     });
 
