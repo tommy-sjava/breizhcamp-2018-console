@@ -1,67 +1,66 @@
-var service = require('./service');
-var readline = require('readline');
+let service = require('./service');
+let readline = require('readline');
 
-var rl = readline.createInterface({
+let rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
-exports.start = function () {
-    console.log('*************************');
-    console.log('1. Rafraichir les données');
-    console.log('2. Lister les sessions');
-    console.log('3. Lister les présentateurs');
-    console.log('4. Rechercher une session');
-    console.log('99. Quitter');
+exports.start = () => {
 
-    rl.question('Quel est votre choix ? ', function (saisie) {
+    console.log(`
+    *************************
+    1. Rafraichir les données
+    2. Lister les sessions
+    3. Lister les présentateurs
+    4. Rechercher une session
+    99. Quitter`);
+
+    rl.question('Quel est votre choix ? ', saisie => {
         if (saisie == 1) {
-            service.init(function (nb) {
-                console.log('[maj] Données mis-à-jour,', nb, 'sessions trouvées.')
-            });
+            service.init()
+                .then(nbSessions => console.log('[maj] Données mis-à-jour,', nbSessions, 'sessions trouvées.'))
+                .catch(err => console.log('Oops', err))
         } else if (saisie == 2) {
-            service.listerSessions(function (talks) {
-                var str;
-                talks.forEach(function (e) {
-                    str = e.name + " (" + e.speakers + ")";
-                    console.log(str);
-                });
-            });
+            service.listerSessions()
+                .then(talks => {
+                    talks.forEach(e => {
+                        console.log(e.name + " (" + e.speakers + ")");
+                    })
+                })
+                .catch(err => console.log('Oops', err));
         } else if (saisie == 3) {
-            service.listerSpeakers(function (langs) {
-                langs.forEach(function (lg) {
-                    console.log(lg.innerHTML);
-                });
-            })
+            service.listerSpeakers()
+                .then(langs => langs.forEach(e => {
+                    console.log(e.innerHTML);
+                }))
+                .catch(err => console.log('Oops', err));
         }
         else if (saisie == 4) {
-            rl.question('Quel mot voulez vous rechercher ? ', function (word) {
-                if(word === ""){
+            rl.question('Quel mot voulez vous rechercher ? ', word => {
+                if (word === "") {
                     console.log("Aucune session trouvée");
-                    console.log("98. Refaire une nouvelle recherche");
-                    console.log("99. Retour au menu principal");
-                }else{
-                    service.findByWord(function (talks) {
-                        var count = 0;
-                        var find = false;
-                        talks.forEach(function (e) {
-                            if (e.name.toLowerCase().indexOf(word) >= 0) {
-                                find = true;
-                                count++;
-                                console.log(count + ". " + e.name);
+                } else {
+                    service.findByWord()
+                        .then(talks => {
+                            let count = 0;
+                            let find = false;
+                            talks.forEach(e => {
+                                if (e.name.toLowerCase().indexOf(word) >= 0) {
+                                    find = true;
+                                    count++;
+                                    console.log(count + ". " + e.name);
+                                }
+                            });
+                            if (!find) {
+                                console.log("Aucune session trouvée");
                             }
-                        });
-                        if(!find){
-                            console.log("Aucune session trouvée");
-                        }
-                        console.log("98. Refaire une nouvelle recherche");
-                        console.log("99. Retour au menu principal");
-                    });
+                        })
+                        .catch(err => console.log('Oops', err));
                 }
-                
             });
-
+        } else if (saisie == 99) {
+            rl.close();
         }
-        //rl.close();
     });
 }

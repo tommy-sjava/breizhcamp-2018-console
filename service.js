@@ -1,74 +1,44 @@
-// tableau qui contiendra toutes les sessions du BreizhCamp
-var talks = [];
-var sessionCount = 0;
+const request = require('request-promise-native');
+let talks = [];
 
-exports.init = function (callback) {
-
-    var request = require('request');
-    request('http://2018.breizhcamp.org/json/talks.json', { json: true }, function (err, res, body) {
-        if (err) { return console.log('Erreur', err); }
-        talks = talks.concat(body);
-        sessionCount += body.length;
-
-        request('http://2018.breizhcamp.org/json/others.json', { json: true }, function (err, res, body) {
-            if (err) { return console.log('Erreur', err); }
-            talks = talks.concat(body);
-            sessionCount += body.length;
-            callback(sessionCount);
-        });
-    });
+exports.init = () => {
+    let promise$1 = request('http://2018.breizhcamp.org/json/talks.json', { json: true })
+    let promise$2 = request('http://2018.breizhcamp.org/json/others.json', { json: true })
+    return Promise.all([promise$1, promise$2]).then(result => {
+        talks = talks.concat(result[0]).concat(result[1]);
+        return talks.length;
+    })
 };
 
-exports.listerSessions = function (callback) {
-
+exports.listerSessions = () => {
     if (talks.length === 0) {
-        exports.init(function (nb) {
-            callback(talks);
+        return exports.init().then(nb => {
+            return talks;
         });
     } else {
-        callback(talks);
+        return new Promise.resolve(talks);
     }
 }
 
-exports.listerSpeakers = function (callback) {
-    var request = require('request');
-    request('http://2018.breizhcamp.org/conference/speakers/', {}, function (err, res, body) {
-        if (err) { return console.log('Erreur', err); }
+exports.listerSpeakers = () => {
 
-        var jsdom = require('jsdom');
-        var dom = new jsdom.JSDOM(body);
-        var langs = dom.window.document.querySelectorAll(".media-heading");
-        callback(langs);
-    });
+    return new Promise((resolve, reject) => {
+        request('http://2018.breizhcamp.org/conference/speakers/', {}, (err, res, body) => {
+            if (err) { return console.log('Erreur', err); }
+            let jsdom = require('jsdom');
+            let dom = new jsdom.JSDOM(body);
+            let langs = dom.window.document.querySelectorAll(".media-heading");
+            resolve(langs);
+        })
+    })
 }
 
-// exports.findByWord = function (word, callback) {
-
-//     request('http://2018.breizhcamp.org/json/talks.json', { json: true }, function (err, res, body) {
-//         if (err) { return console.log('Erreur', err); }
-//         talks = talks.concat(body);
-//         sessionCount += body.length;
-
-//         request('http://2018.breizhcamp.org/json/others.json', { json: true }, function (err, res, body) {
-//             if (err) { return console.log('Erreur', err); }
-//             talks = talks.concat(body);
-//             sessionCount += body.length;
-//         });
-
-//         talks.forEach(function (e) {
-//             if (e.name.toLowerCase().indexOf(word) >= 0) { 
-//                 console.log(e.name);
-//             }
-//         });
-//     });
-// }
-
-exports.findByWord = function (callback) {
+exports.findByWord = () => {
     if (talks.length === 0) {
-        exports.init(function (nb) {
-            callback(talks);
+        return exports.init().then(nb => {
+            return talks;
         });
     } else {
-        callback(talks);
+        return new Promise.resolve(talks);
     }
 }
