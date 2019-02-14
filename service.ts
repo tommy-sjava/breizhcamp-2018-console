@@ -16,7 +16,7 @@ exports.listerSessions = () => {
             return talks;
         });
     } else {
-        return new Promise.resolve(talks);
+        return Promise.resolve(talks);
     }
 }
 
