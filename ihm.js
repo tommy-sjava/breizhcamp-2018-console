@@ -18,7 +18,9 @@ var menu = function () {
 rl.question('1. Rafraichir les données\n2. Lister les sessions\n99. Quitter', function(saisie) {
     switch(saisie) {
         case('1'):
-
+        service.init(callback) {
+            console.log('Données mises à jour.')
+        };
         break;
 
         case('2'):
@@ -28,7 +30,7 @@ rl.question('1. Rafraichir les données\n2. Lister les sessions\n99. Quitter', f
         break;
 
         case('99'):
-
+        service.
         break;
         }
     });
