@@ -1,30 +1,33 @@
+
+
+let request = require('request-promise-native')
+
+
 // tableau qui contiendra toutes les sessions du BreizhCamp
-var talks = [];
+let talks = [];
 
-exports.init = function (callback) {
+exports.init = function () {
 
-    // TODO effectuer les requêtes HTTP permettant de récupérer les données du BreizhCamp
-    var request = require('request')
+    const p1$ = request('http://2018.breizhcamp.org/json/talks.json', { json: true });
+    const p2$ = request('http://2018.breizhcamp.org/json/others.json', { json: true });
 
-    // Envoie de la requête http
-    request('http://2018.breizhcamp.org/json/talks.json', { json: true }, function (err, res, tab1) {
-        if (err) { return console.log('Erreur', err); }
+    Promise.all([p1$, p2$])
+        .then(res => {
+            talks = res[0].concat(res[1]);
+        }
 
-        //console.log('Ok', tab1);
-        talks = talks.concat(tab1);
-        request('http://2018.breizhcamp.org/json/others.json', { json: true }, function (err, res, tab2) {
-            if (err) { return console.log('Erreur', err); }
-
-            //console.log('Ok', tab2);
-            talks = talks.concat(tab2);
-            callback(talks.length);
-        });
     })
+function (err, res, tab2) {
+    if (err) { return console.log('Erreur', err); }
+
+    callback(talks.length);
+};
 }
-exports.listerSession = function (callback) {
+
+exports.listerSession = (callback) => {
 
     if (talks.length === 0) {
-        exports.init(function (nb) {
+        exports.init(nb => {
             callback(talks)
         })
     } else {

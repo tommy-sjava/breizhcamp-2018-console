@@ -1,5 +1,5 @@
-var service = require('../service')
+let service = require('../service')
 
-service.init(function(nb) {
+service.init(function (nb) {
     console.log('[init]', nb, 'sessions trouvées.')
 });

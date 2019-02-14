@@ -1,13 +1,8 @@
-var service = require('./service');
+let service = require('./service');
 
-exports.start = function () {
-    service.init(function (nb) {
-        console.log('[init]', nb, 'sessions trouvées.')
-    });
-}
-var readline = require('readline');
+let readline = require('readline');
 
-var rl = readline.createInterface({
+let rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
@@ -20,46 +15,51 @@ var rl = readline.createInterface({
 // version asynchrone
 //service.init(function(resultat) {})
 
-exports.menu = function menu() {
+const menu = function () {
     console.log('************************');
     console.log('1. Rafraichir les données');
     console.log('2. Lister les sessions');
+    console.log('3. Lister les présentateurs');
     console.log('99. Quitter');
 
-    rl.question('', function (saisie) {
+    rl.question('', (saisie) => {
         console.log(`Vous avez saisi : ${saisie}`);
         if (saisie === '1') {
-            service.init(function (nb) {
+            service.init(nb => {
                 console.log('[init]', nb, 'sessions trouvées.')
                 console.log('... Données mises à jour');
                 menu();
             });
         } else if (saisie === '2') {
-            service.listerSession(function (talks) {
-                talks.forEach(function (uneSession) {
-
-                    var titre = '';
+            service.listerSession(talks => {
+                talks.forEach(uneSession => {
+                    let titre = '';
                     if (uneSession.name) {
                         titre += uneSession.name.toUpperCase()
                     } else {
                         console.log('Pas de titre')
                     }
-                    var speakers = '';
+                    let speakers = '';
                     if (uneSession.speakers) {
                         speakers += uneSession.speakers.toUpperCase()
                     } else {
                         console.log('Pas de Speakers associé à :' + uneSession.name)
                     }
-
-                    console.log(titre + '  ' + '(' + speakers + ')')
+                    let affichage = `${titre} (${speakers})`
+                    console.log(affichage);
 
                 })
-                menu();
-            });
 
+            })
+            menu();
         } else if (saisie === '99') {
             rl.close();
+        } else if (saisie != '1' || saisie != '2' || saisie != '99') {
+            console.log('Saisie non valide')
+            menu();
         }
 
     });
 }
+
+exports.menu = menu;
