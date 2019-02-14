@@ -1,7 +1,7 @@
 // tableau qui contiendra toutes les sessions du BreizhCamp
-var talks = [];
+let talks = [];
 
-exports.init = function (callback) {
+exports.init = callback => {
 
     talks = [];
     // Effectuer les requêtes HTTP permettant de récupérer les données du BreizhCamp
@@ -10,11 +10,10 @@ exports.init = function (callback) {
 
     request('http://2018.breizhcamp.org/json/talks.json', { json: true }, (err, res, body) => {
         if (err) {
-            return console.log('Erreur', err);
+            return console.log(`Erreur ${err}`);
         }
 
         talks = talks.concat(body); // => une fois les données récupérées, alimenter la variable talks
-        //console.log(talks);
 
         request('http://2018.breizhcamp.org/json/others.json', { json: true }, (err, res, body) => {
             if (err) {
@@ -22,7 +21,6 @@ exports.init = function (callback) {
             }
 
             talks = talks.concat(body); // => une fois les données récupérées, alimenter la variable talks
-            //console.log(talks);
 
             console.log('Données mise à jour');
             callback(talks.length);        // => invoquer la callback avec le nombre de sessions récupérées
@@ -30,13 +28,12 @@ exports.init = function (callback) {
     });
 };
 
-exports.listerSessions = function (callback) {
+exports.listerSessions = callback => {
 
     if (talks.length == 0) {
 
-        exports.init(function (taille) {
+        exports.init(taille => {
             // init est fait
-
             callback(talks)
         });
     }
@@ -45,15 +42,15 @@ exports.listerSessions = function (callback) {
     }
 };
 
-exports.listerPresentateurs = function (callback) {
-    var request = require('request');
-    var jsdom = require('jsdom');
+exports.listerPresentateurs = callback => {
+    let request = require('request');
+    let jsdom = require('jsdom');
 
-    request('http://2018.breizhcamp.org/conference/speakers/', {}, function (err, res, body) {
+    request('http://2018.breizhcamp.org/conference/speakers/', {}, (err, res, body) => {
         if (err) { return console.log('Erreur', err); }
 
-        var dom = new jsdom.JSDOM(body);
-        var langs = dom.window.document.querySelectorAll("h3.media-heading");
+        let dom = new jsdom.JSDOM(body);
+        let langs = dom.window.document.querySelectorAll("h3.media-heading");
         callback(langs);
     });
 }

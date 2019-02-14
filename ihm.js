@@ -1,33 +1,33 @@
-var service = require('./service');
-var readline = require('readline');
+const service = require('./service');
+const readline = require('readline');
 
-var rl = readline.createInterface({
+const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
-exports.start = function () {
+exports.start = () => {
 
     menu();
 }
 
-var menu = function () {
+const menu = () => {
 
     rl.question('*************************\n1. Rafraichir les données\n2. Lister les sessions\n3. Lister les présentateurs\n4. Rechercher une session\n99. Quitter\n', function (saisie) {
 
         switch (saisie) {
 
             case ('1'):
-                service.init(function (nb) {
-                    console.log(nb, 'sessions trouvées.');
+                service.init(nb => {
+                    console.log(`${nb} sessions trouvées.`);
                     menu();
                 });
                 break;
 
             case ('2'):
-                service.listerSessions(function (tab) {
+                service.listerSessions(tab => {
                     tab.forEach(element => {
-                        str = element.name + ' (' + element.speakers + ')';
+                        str = `${element.name} (${element.speakers})`;
                         console.log(str);
                     });
                     menu();
@@ -35,7 +35,7 @@ var menu = function () {
                 break;
 
             case ('3'):
-                service.listerPresentateurs(function (nb) {
+                service.listerPresentateurs(nb => {
                     nb.forEach(element => {
                         console.log(element.innerHTML);
                     })
@@ -56,21 +56,21 @@ var menu = function () {
     });
 }
 
-var detailSession = function () {
-    rl.question('Quel mot recherchez-vous ? : \n', function (saisie) {
-        service.listerSessions(function (tab) {
-            var tabRet = [];
-            if (tab.some(function (val) {
+const detailSession = () => {
+    rl.question('Quel mot recherchez-vous ? : \n', saisie => {
+        service.listerSessions(tab => {
+            let tabRet = [];
+            if (tab.some(val => {
                 return val.name.toUpperCase().includes(saisie.toUpperCase());
             })) {
 
-                tabRet = tab.filter(function (val) {
+                tabRet = tab.filter(val => {
                     return (val.name.toUpperCase().includes(saisie.toUpperCase()));
                 })
                 menuSession(tabRet);
             }
             else {
-                rl.question('(aucune session)\n98. Refaire une nouvelle recherche\n99. Retour au menu principal\n', function (saisie) {
+                rl.question('(aucune session)\n98. Refaire une nouvelle recherche\n99. Retour au menu principal\n', saisie => {
                     switch (saisie) {
                         case ('98'):
                             detailSession();
@@ -85,16 +85,16 @@ var detailSession = function () {
     });
 }
 
-var menuSession = function (tab) {
+const menuSession = tab => {
 
-    var i = 1;
+    let i = 1;
     tab.forEach(element => {
         console.log(i + '. ' + element.name);
         i++;
     });
-    rl.question('98. Refaire une nouvelle recherche\n99. Retour au menu principal\n', function (saisie) {
+    rl.question('98. Refaire une nouvelle recherche\n99. Retour au menu principal\n', saisie => {
         if (saisie > 0 && saisie < tab.length) {
-            console.log('*Titre* : ' + tab[saisie].name + '\n*Présentateur* : ' + tab[saisie].speakers + '\n\n*Description*\n\n' + tab[saisie].description + '\n');
+            console.log(`* Titre * : ${tab[saisie].name} \n* Présentateur * : ${tab[saisie].speakers} \n\n* Description *\n\n${tab[saisie].description} \n`);
             menuSession(tab);
         }
         else if (saisie == 98) {
