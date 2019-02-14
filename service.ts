@@ -1,10 +1,9 @@
 // tableau qui contiendra toutes les sessions du BreizhCamp
-const rp = require('request-promise');
-const request = require('request');
-const jsdom = require('jsdom');
-let talks = [];
+import rp from 'request-promise-native';
+import jsdom from 'jsdom';
+let talks: any[] = [];
 
-exports.init = /*(callback)*/ () => {
+export const init = () => {
 
     talks = [];
     let promise1$ = rp('http://2018.breizhcamp.org/json/talks.json', { json: true })
@@ -43,9 +42,9 @@ exports.init = /*(callback)*/ () => {
 
 };
 
-exports.listerSessions = () => {
+export const listerSessions = () => {
 
-    return talks.length > 0 ? Promise.resolve(talks) : exports.init().then(nbSessions => talks);
+    return talks.length > 0 ? Promise.resolve(talks) : exports.init().then(() => talks);
 
     /*if (talks == 0) exports.init(() => {
         talks.forEach(element => {
@@ -59,7 +58,7 @@ exports.listerSessions = () => {
 
 }
 
-exports.listePres = () => {
+export const listePres = () => {
     return rp('http://2018.breizhcamp.org/conference/speakers/').then(innerHTML => {
         let dom = new jsdom.JSDOM(innerHTML);
         let langs = dom.window.document.querySelectorAll("h3.media-heading");
@@ -79,9 +78,9 @@ exports.listePres = () => {
     });*/
 }
 
-exports.research = saisie => {
+export const research = (saisie: any) => {
 
-    if (talks == 0) exports.init(() => { });
+    if (talks.length == 0) exports.init(() => { });
     let res = [];
     res = talks.filter(val => {
         return (val.name.toUpperCase().includes(saisie.toUpperCase()))

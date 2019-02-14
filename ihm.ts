@@ -1,5 +1,5 @@
-const service = require('./service');
-const readline = require('readline');
+import * as service from './service'
+import readline from 'readline'
 const lg = console.log;
 
 const rl = readline.createInterface({
@@ -7,7 +7,7 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-exports.start = () => {
+export const start = () => {
     menu();
 };
 
@@ -22,7 +22,7 @@ function menu() {
     });
 };
 
-function choice(saisie) {
+function choice(saisie: any) {
     switch (saisie) {
         case '1':
             service.init().then(() => {
@@ -36,16 +36,16 @@ function choice(saisie) {
             menu();
             break;
         case '2':
-            service.listerSessions().then(element => {
-                element.forEach(element => { lg(`${element.name} (${element.speakers} )`) });
+            service.listerSessions().then((element: any) => {
+                element.forEach((element: any) => { lg(`${element.name} (${element.speakers} )`) });
                 menu();
-            }, error => {
-                lg('recuperation des données impossible');
+            }, (error: any) => {
+                lg(`recuperation des données impossible ${error}`);
                 menu();
             });
 
             /*service.listerSessions(val => {
-                console.log(`${val.name} (${val.speakers} )`)
+                console.log(`${ val.name }(${ val.speakers })`)
             });*/
 
             break;
@@ -88,7 +88,7 @@ function researchSession() {
 
 }
 
-function detail(res) {
+function detail(res: any) {
     // var rl = readline.createInterface({
     //     input: process.stdin,
     //     output: process.stdout
@@ -96,16 +96,16 @@ function detail(res) {
 
     if (res != null) {
         let i = 1;
-        res.forEach(element => {
+        res.forEach((element: any) => {
             console.log(i + ' ' + element.name);
             i++;
         });
     } else { console.log(`(aucune session)`) }
     console.log('98. Refaire une nouvelle recherche\n99. Retour au menu principal\n')
 
-    rl.question('Souhaitez vous un détail ?\n', saisie => {
+    rl.question('Souhaitez vous un détail ?\n', (saisie: any) => {
         if (saisie > 0 && saisie <= res.length) {
-            console.log(`*Titre* : ${res[saisie - 1].name}**\n*Présentateurs* : ${res[saisie - 1].speakers}\n\n*Description*\n\n${res[saisie - 1].description}\n\n\n\n`);
+            console.log(`* Titre * : ${res[saisie - 1].name} **\n * Présentateurs * : ${res[saisie - 1].speakers}\n\n * Description *\n\n${res[saisie - 1].description}\n\n\n\n`);
             detail(res);
         } else if (saisie == 98) {
             researchSession();
