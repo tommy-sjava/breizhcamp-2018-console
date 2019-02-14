@@ -25,22 +25,36 @@ function menu() {
 function choice(saisie) {
     switch (saisie) {
         case '1':
-            service.init(() => {
+            service.init().then(() => {
                 lg('... Données mises à jour');
+            }).catch(err => {
+                console.log('Erreur recupération');
             });
+            /*service.init(() => {
+                lg('... Données mises à jour');
+            });*/
             menu();
             break;
         case '2':
-            service.listerSessions(val => {
-                console.log(`${val.name} (${val.speakers} )`)
+            service.listerSessions().then(element => {
+                element.forEach(element => { lg(`${element.name} (${element.speakers} )`) });
+                menu();
+            }, error => {
+                lg('recuperation des données impossible');
+                menu();
             });
-            menu();
+
+            /*service.listerSessions(val => {
+                console.log(`${val.name} (${val.speakers} )`)
+            });*/
+
             break;
         case '3':
-            service.listePres(val => {
-                console.log(val);
-            });
-            menu();
+            service.listePres().then(val => {
+                val.forEach(element => lg(element));
+                menu();
+            }, error => { lg(error) });
+
             break;
         case '4':
             researchSession();

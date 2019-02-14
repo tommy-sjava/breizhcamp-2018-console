@@ -1,14 +1,25 @@
 // tableau qui contiendra toutes les sessions du BreizhCamp
-const request = require('request')
+const rp = require('request-promise');
+const request = require('request');
 const jsdom = require('jsdom');
 let talks = [];
 
-exports.init = callback => {
+exports.init = /*(callback)*/ () => {
 
     talks = [];
+    let promise1$ = rp('http://2018.breizhcamp.org/json/talks.json', { json: true })
+    let promise2$ = rp('http://2018.breizhcamp.org/json/others.json', { json: true })
+
+    return Promise.all([promise1$, promise2$]).then(htmlString => {
+        //console.log(htmlString);
+        talks = talks.concat(htmlString[0]).concat(htmlString[1]);
+        return talks.length;
+    })
+
+
     // Envoie de la requête http
-    request('http://2018.breizhcamp.org/json/talks.json', { json: true }, (err, res, body) => {
-        if (err) { return console.log('Erreur', err); }
+    /* request('http://2018.breizhcamp.org/json/talks.json', { json: true }, (err, res, body) => {
+        if (err) { return console.log('Erreur', err); } 
 
         // body contient les données récupérées
         talks = talks.concat(body);
@@ -28,12 +39,15 @@ exports.init = callback => {
             callback(talks.length);
         });
 
-    });
+    });*/ // befor promise
 
 };
 
-exports.listerSessions = callback => {
-    if (talks == 0) exports.init(() => {
+exports.listerSessions = () => {
+
+    return talks.length > 0 ? Promise.resolve(talks) : exports.init().then(nbSessions => talks);
+
+    /*if (talks == 0) exports.init(() => {
         talks.forEach(element => {
             callback(element);
         });
@@ -41,12 +55,19 @@ exports.listerSessions = callback => {
 
     talks.forEach(element => {
         callback(element);
-    });
+    });*/
 
 }
 
-exports.listePres = callback => {
-    request('http://2018.breizhcamp.org/conference/speakers/', {}, (err, res, body) => {
+exports.listePres = () => {
+    return rp('http://2018.breizhcamp.org/conference/speakers/').then(innerHTML => {
+        let dom = new jsdom.JSDOM(innerHTML);
+        let langs = dom.window.document.querySelectorAll("h3.media-heading");
+        return Array.prototype.slice.call(langs).map(htmlNode => htmlNode.innerHTML);
+    })
+
+
+    /*request('http://2018.breizhcamp.org/conference/speakers/', {}, (err, res, body) => {
         if (err) { return console.log('Erreur', err); }
 
         // récupération de la page HTML 
@@ -55,7 +76,7 @@ exports.listePres = callback => {
         langs.forEach(element => {
             callback(element.innerHTML);
         });
-    });
+    });*/
 }
 
 exports.research = saisie => {
