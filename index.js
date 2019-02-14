@@ -1,6 +1,6 @@
 
 
-var ihm = require('./ihm');
+let ihm = require('./ihm');
 
 console.log('** Application BreizhCamp 2018 **');
 

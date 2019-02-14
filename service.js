@@ -1,7 +1,7 @@
-var request = require('request')
-var talks = [];
+let request = require('request')
+let talks = [];
 
-exports.init = function (callback) {
+exports.init = callback => {
     request('http://2018.breizhcamp.org/json/talks.json', { json: true }, function(err, res, body) {
         if (err) { return console.log('Erreur', err); }
     
@@ -17,27 +17,27 @@ exports.init = function (callback) {
     });
 };
 
-exports.listerSessions = function(callback) {
+exports.listerSessions = callback => {
     if(talks.length === 0) {
-        exports.init(function(nb){
+        exports.init(nb => {
             callback(talks)
         })
     } else {
         callback(talks)
     }
 }
-exports.listerPresentateur = function (callback) {
+exports.listerPresentateur = callback => {
 
 
     request('http://2018.breizhcamp.org/conference/speakers/', {}, function (err, res, body) {
         if (err) { return console.log('Erreur', err); }
-        var jsdom = require('jsdom');
+        let jsdom = require('jsdom');
 
         // récupération de la page HTML exemple
                
-        var dom = new jsdom.JSDOM(body);
-        var langs = dom.window.document.querySelectorAll(".media-heading");
-        langs.forEach(function(lg) {
+        let dom = new jsdom.JSDOM(body);
+        let langs = dom.window.document.querySelectorAll(".media-heading");
+        langs.forEach(lg => {
             console.log(lg.innerHTML);
         });
     });
