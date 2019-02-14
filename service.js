@@ -1,21 +1,20 @@
 // tableau qui contiendra toutes les sessions du BreizhCamp
-var request = require('request')
-var jsdom = require('jsdom');
-var readline = require('readline');
-var talks = [];
+const request = require('request')
+const jsdom = require('jsdom');
+let talks = [];
 
-exports.init = function (callback) {
+exports.init = callback => {
 
     talks = [];
     // Envoie de la requête http
-    request('http://2018.breizhcamp.org/json/talks.json', { json: true }, function (err, res, body) {
+    request('http://2018.breizhcamp.org/json/talks.json', { json: true }, (err, res, body) => {
         if (err) { return console.log('Erreur', err); }
 
         // body contient les données récupérées
         talks = talks.concat(body);
         console.log('OK talks');
         //console.log(talks);
-        request('http://2018.breizhcamp.org/json/others.json', { json: true }, function (err, res, body) {
+        request('http://2018.breizhcamp.org/json/others.json', { json: true }, (err, res, body) => {
             if (err) { return console.log('Erreur', err); }
 
             // body contient les données récupérées
@@ -33,8 +32,8 @@ exports.init = function (callback) {
 
 };
 
-exports.listerSessions = function (callback) {
-    if (talks == 0) exports.init(function (taille) {
+exports.listerSessions = callback => {
+    if (talks == 0) exports.init(() => {
         talks.forEach(element => {
             callback(element);
         });
@@ -46,24 +45,24 @@ exports.listerSessions = function (callback) {
 
 }
 
-exports.listePres = function (callback) {
-    request('http://2018.breizhcamp.org/conference/speakers/', {}, function (err, res, body) {
+exports.listePres = callback => {
+    request('http://2018.breizhcamp.org/conference/speakers/', {}, (err, res, body) => {
         if (err) { return console.log('Erreur', err); }
 
         // récupération de la page HTML 
-        var dom = new jsdom.JSDOM(body);
-        var langs = dom.window.document.querySelectorAll("h3.media-heading");
+        let dom = new jsdom.JSDOM(body);
+        let langs = dom.window.document.querySelectorAll("h3.media-heading");
         langs.forEach(element => {
             callback(element.innerHTML);
         });
     });
 }
 
-exports.research = function (saisie) {
+exports.research = saisie => {
 
-    if (talks == 0) exports.init(function (taille) { });
-    var res = [];
-    res = talks.filter(function (val) {
+    if (talks == 0) exports.init(() => { });
+    let res = [];
+    res = talks.filter(val => {
         return (val.name.toUpperCase().includes(saisie.toUpperCase()))
     });
     return res;
