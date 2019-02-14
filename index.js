@@ -1,5 +1,5 @@
-var ihm = require('./ihm/menu.js');
+const ihm = require(`./ihm/menu.js`);
 
-console.log('** Application BreizhCamp 2018 **');
+console.log(`** Application BreizhCamp 2018 **`);
 
-ihm.affichage();
+const affichage = new ihm.Menu();

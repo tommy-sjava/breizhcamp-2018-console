@@ -1,33 +1,35 @@
-var service = require('../service/service.js');
-var menu = require('./menu.js');
+const service = require(`../service/service.js`);
+const menu = require(`./menu.js`);
 
-exports.start = function () {
-    menu.affichage(function () {
+// exports.start = () => {
+//     console.log("testeeeeee");
+//     service.init()
+//         .then(() => {
+//             console.log("test");
+//         })
+// };
 
-    });
-};
-
-exports.listeSession = function (callback) {
-    service.listerSessions(function (listeName) {
+exports.listeSession = callback => {
+    service.listerSessions(listeName => {
         callback(listeName);
 
     });
 };
 
-exports.listeSpeakers = function (callback) {
-    service.listeSpeakers(function (langs) {
+exports.listeSpeakers = callback => {
+    service.listeSpeakers(langs => {
         callback(langs);
 
     });
 };
 
-exports.listeSessionVue = function (saisie2) {
-    var res = service.listeSessionVues(saisie2);
+exports.listeSessionVue = saisie2 => {
+    let res = service.listeSessionVues(saisie2);
 
     return res;
 };
 
-exports.descriptSession = function (saisie2) {
-    var res = service.descriptionSession(saisie2);
+exports.descriptSession = saisie2 => {
+    let res = service.descriptionSession(saisie2);
     return res;
 };
