@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/jsdom": "^12.2.2",
-    "@types/node": "^11.9.4",
+    "@types/node": "^11.9.3",
     "@types/request-promise-native": "^1.0.15",
     "jsdom": "^13.2.0",
     "request": "^2.88.0",
