@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/bpayanpsl/breizhcamp-2018-console#readme",
   "dependencies": {
+    "jsdom": "^13.2.0",
     "request": "^2.88.0"
   }
 }

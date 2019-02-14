@@ -1,8 +1,8 @@
-var service = require('./service');
-var readline = require('readline');
-var request = require('request');
+let service = require('./service');
+let readline = require('readline');
+let request = require('request');
 
-var rl = readline.createInterface({
+let rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
@@ -13,8 +13,8 @@ exports.start = function () {
     //});
     menu();
 };
-var menu = function () {
-    rl.question("1. Rafraichir les données\n2. Lister les sessions\n99. Quitter\n", function (saisie) {
+let menu = function () {
+    rl.question("1. Rafraichir les données\n2. Lister les sessions\n3. Lister les présentateurs\n99. Quitter\n", function (saisie) {
         switch (saisie) {
             case ('1'):
                 // service.init(callback);
@@ -28,13 +28,13 @@ var menu = function () {
                 service.listerSession(function (talks) {
                     talks.forEach(function (uneSession) {
 
-                        var titre = '';
+                        let titre = '';
                         if (uneSession.name) {
                             titre += uneSession.name.toUpperCase()
                         } else {
                             console.log('Pas de titre')
                         }
-                        var speakers = '';
+                        let speakers = '';
                         if (uneSession.speakers) {
                             speakers += uneSession.speakers.toUpperCase()
                         } else {
@@ -47,6 +47,7 @@ var menu = function () {
                     menu();
                 });
                 break;
+            case ('3'): break;
             case ('99'): console.log("Fermeture...\n")
                 rl.close();
                 break;
