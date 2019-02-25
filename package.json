@@ -1,0 +1,24 @@
+{
+  "name": "breizhcamp-2018-console",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bpayanpsl/breizhcamp-2018-console.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bpayanpsl/breizhcamp-2018-console/issues"
+  },
+  "homepage": "https://github.com/bpayanpsl/breizhcamp-2018-console#readme",
+  "dependencies": {
+    "jsdom": "^13.2.0",
+    "request": "^2.88.0"
+  }
+}
